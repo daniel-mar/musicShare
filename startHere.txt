@@ -1,0 +1,62 @@
+Create project
+    dotnet new mvc --no-https -o projectName
+
+-- We know we will be connecting to a database --
+
+install packages: sql
+    dotnet add package Pomelo.EntityFrameworkCore.MySql --version 6.0.3
+
+install packages: database
+    dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.1
+
+Within Models folder, create your schemas
+    Create:
+        MyContext.cs
+        User.cs
+
+// Now depending on your project scope, you may create all of your tables now.
+    
+Within User.cs, we setup a login/reg Model. 
+The datatype is string? because it is nullable as of .NET6
+
+Models are done, more can be added as the page is built..
+    Add Models to MyContext.cs
+    Example:
+        public DbSet<User> Users {get;set;}
+
+Add connections
+    appsettings.json
+    "DBInfo":
+    {
+        "Name": "MySQLconnect",
+        "ConnectionString": "server-localhost;userid=userid;password=password;port=3306;database=musicShare;SslMode=None"
+    }
+
+    replace userid with userid
+    password with the password
+    sometimes in dev enviroments these are root
+    the database name should be updated as well
+
+Add items to program.cs
+
+Add index.cshtml login/reg
+Add _Login.cshtml to use in index.cshtml
+Add LoginUser.cs Model
+
+Add your data models / schemas
+Ex: User, Products, Orders
+
+Add their one to many and many to many in each class
+Add their Lists to MyContext
+
+We have completed how we want our tables to look in SQL
+Now proceed to push to our database and create our tables
+
+dotnet ef migrations add InitialCreate --context MyContext
+
+dotnet ef database update --context MyContext
+
+- issues with migrations may be resolved with:
+dotnet tool install --global dotnet-ef 
+
+- other issues could be from packages not being installed from the start
