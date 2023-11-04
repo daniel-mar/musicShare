@@ -1,4 +1,43 @@
 @model Song
 
-<h1>Add a new song</h1>
-<form action=""></form>
+<div class="bg-primary p-3 border rounded">
+    <h1 class="text-white">Add a song here</h1>
+    <form action="/song/add" method="post">
+        <div class="form-group mb-3">
+            <label for="Title" class="text-white">Title</label>
+            <input asp-for="Title" class="form-control">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label for="Artist" class="text-white">Artist</label>
+            <input asp-for="Artist" class="form-control">
+            <span asp-validation-for="Artist" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label for="DurMinutes" class="text-white">Duration</label>
+            <input asp-for="DurMinutes" class="col-1">
+            <span>:</span>
+            <input asp-for="DurSeconds" class="col-1">
+            <span asp-validation-for="DurMinutes" class="text-danger"></span>
+            <span asp-validation-for="DurSeconds" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label for="Genre" class="mb-1 text-white">Genre</label>
+            <select asp-for="Genre" class="form-control">
+                <option selected>Genre List</option>
+                <option value="Rock">Rock</option>
+                <option value="Metal">Metal</option>
+                <option value="RnB">RnB</option>
+                <option value="Country">Country</option>
+                <option value="Pop">Pop</option>
+                <option value="Hiphop">Hip Hop</option>
+                <option value="Raggae">Raggae</option>
+                <option value="Electronic">Electronic</option>
+                <option value="Raggaeton">Raggaeton</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add Song" class="btn btn-warning">
+        </div>
+    </form>
+</div>
