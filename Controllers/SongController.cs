@@ -57,12 +57,28 @@ public class SongController : Controller
         Song? songToShow = _context.Songs.Include(s => s.Submitter).Include(d => d.UsersWhoLiked).FirstOrDefault(a => a.SongId == songId);
         if (songToShow == null)
         {
-            return RedirectToAction("AllSongs");
+            return RedirectToAction("~/Views/Home/Dashboard");
         }
         return View(songToShow);
     }
 
-
+    // Handle delete song
+    [HttpGet("song/delete/{songId}")]
+    public IActionResult DeleteSong(int songId)
+    {
+        Song? songToDelete = _context.Songs.SingleOrDefault(a => a.SongId == songId);
+        if (songToDelete == null)
+        {
+            return RedirectToAction("Dashboard");
+        }
+        if (songToDelete.UserId != HttpContext.Session.GetInt32("UserId"))
+        {
+            return RedirectToAction("Logout");
+        }
+        _context.Songs.Remove(songToDelete);
+        _context.SaveChanges();
+        return RedirectToAction(nameof(HomeController.Dashboard), "Home");
+    }
 
 
 }

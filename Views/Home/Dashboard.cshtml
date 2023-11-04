@@ -1,6 +1,34 @@
 @{
-    ViewData["Title"] = "MusicShare Login";
+    ViewData["Title"] = "Dashboard";
 }
 
-<h1>Welcome</h1>
- @* @ViewBag.LoggedIn.Name! *@
+<h1>Welcome @ViewBag.LoggedIn.Name!</h1>
+<div class="row">
+    <div class="col-6">
+        <h3>All of your songs</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Duration</th>
+                <th>Genre</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
+                <th>Actions</th>
+            </tr>
+            @foreach(Song s in ViewBag.LoggedIn.SongsSubmitted)
+            {
+                <tr>
+                    <td><a href="/song/@s.SongId">@s.Title</a></td>
+                    <td>@s.Artist</td>
+                    <td>@s.DurMinutes:@if(s.DurSeconds < 10)
+        {<span>0<span>@s.DurSeconds</span></span>}else{@s.DurSeconds}</td>
+                    <td>@s.Genre</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td><a href="/song/delete/@s.SongId" class="btn btn-danger text-white">Delete</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

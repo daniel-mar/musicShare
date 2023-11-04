@@ -1,3 +1,7 @@
+@{
+    ViewData["Title"] = "View Song";
+}
+
 @model Song
 
 <div class="bg-primary p-3 border rounded text-white">
@@ -11,17 +15,17 @@
 
     @if (Model.UserId == @Context.Session.GetInt32("UserId"))
     {
-        <h4><a href="/song/delete/@Model.SongId" class="text-danger">Delete</a></h4>
+        <h4><a href="/song/delete/@Model.SongId" class="btn btn-danger text-white">Delete</a></h4>
     }
     else
     {
         if (@Model.UsersWhoLiked.Any(s => s.UserId == @Context.Session.GetInt32("UserId")))
         {
-            <h4><a href="/song/unlike/@Model.SongId" class="text-warning">Unlike this song</a></h4>
+            <h4><a href="/song/unlike/@Model.SongId" class="btn btn-warning text-white">Unlike this song</a></h4>
         }
         else
         {
-            <h4><a href="/song/like/@Model.SongId" class="text-white">Like this song</a></h4>
+            <h4><a href="/song/like/@Model.SongId" class="btn btn-success text-white">Like this song</a></h4>
         }
     }
 </div>
