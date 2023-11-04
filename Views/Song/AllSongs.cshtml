@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "All Songs";
+}
+
+<div class="div">
+    <h1>All songs here</h1>
+    <table class="table table-striped">
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Duration</th>
+            <th>Genre</th>
+            <th>Likes</th>
+            <th>Dislikes</th>
+        </tr>
+        @foreach(Song s in ViewBag.AllSongs)
+        {
+            <tr>
+                <td><a href="/song/@s.SongId">@s.Title</a></td>
+                <td>@s.Artist</td>
+                <td>@s.DurMinutes:@s.DurSeconds</td>
+                <td>@s.Genre</td>
+                <td>@s.UsersWhoLiked.Count</td>
+                <td>@s.UsersWhoDisliked.Count</td> 
+            </tr>
+        }
+    </table> 
+
+</div>

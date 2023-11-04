@@ -62,6 +62,19 @@ public class SongController : Controller
         return View(songToShow);
     }
 
+    // View all songs
+    [HttpGet("song/all")]
+    public IActionResult AllSongs()
+    {
+        if(HttpContext.Session.GetInt32("UserId") == null)
+        {
+            return RedirectToAction("Index");
+        }
+        ViewBag.NotLoggedIn = false;
+        ViewBag.AllSongs = _context.Songs.Include(a => a.Submitter).Include(b => b.UsersWhoLiked).ToList();
+        return View("AllSongs");
+    }
+
     // Handle delete song
     [HttpGet("song/delete/{songId}")]
     public IActionResult DeleteSong(int songId)
