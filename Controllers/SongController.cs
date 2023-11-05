@@ -1,4 +1,4 @@
-#pragma warning disable CS8629
+#pragma warning disable CS8629, CS8634
 using musicShare.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +54,7 @@ public class SongController : Controller
     public IActionResult OneSong(int songId)
     {
         ViewBag.NotLoggedIn = false;
-        Song? songToShow = _context.Songs.Include(s => s.Submitter).Include(d => d.UsersWhoLiked).FirstOrDefault(a => a.SongId == songId);
+        Song? songToShow = _context.Songs.Include(s => s.Submitter).Include(d => d.UsersWhoLiked).Include(b => b.UsersWhoDisliked).FirstOrDefault(a => a.SongId == songId);
         if (songToShow == null)
         {
             return RedirectToAction("~/Views/Home/Dashboard");
@@ -72,8 +72,79 @@ public class SongController : Controller
         }
         ViewBag.NotLoggedIn = false;
         ViewBag.AllSongs = _context.Songs.Include(a => a.Submitter).Include(b => b.UsersWhoLiked).ToList();
-        return View("AllSongs");
+        ViewBag.UserDislikedSongs = _context.Songs.Include(a => a.Submitter).Include(b => b.UsersWhoDisliked).ToList();
+        return View();
     }
+
+    // Add Like to song; LikeId, UserId, SongId
+    [HttpGet("song/like/{songId}")]
+    public IActionResult LikeSong(int songId)
+    {
+        if(HttpContext.Session.GetInt32("UserId") == null)
+        {
+            return RedirectToAction("Index");
+        }
+        Like newLike = new Like()
+        {
+            UserId = (int)HttpContext.Session.GetInt32("UserId"),
+            SongId = songId
+        };
+        _context.Add(newLike);
+        _context.SaveChanges();
+        return Redirect($"/song/{songId}");
+    }
+
+    // Remove Like from database
+    [HttpGet("song/unlike/{songId}")]
+    public IActionResult UnLikeSong(int songId)
+    {
+        if(HttpContext.Session.GetInt32("UserId") == null)
+        {
+            return RedirectToAction("Index");
+        }
+        // User must be logged and someone who liked the post
+        int loggedUserId = (int)HttpContext.Session.GetInt32("UserId");
+        Like? likeToDelete = _context.Likes.SingleOrDefault(a => a.UserId == loggedUserId && a.SongId == songId);
+        _context.Remove(likeToDelete);
+        _context.SaveChanges();
+        return Redirect($"/song/{songId}");
+    }
+
+    // Add Dislike to song; DislikeId, UserId, SongId
+    [HttpGet("song/dislike/{songId}")]
+    public IActionResult DislikeSong(int songId)
+    {
+        if(HttpContext.Session.GetInt32("UserId") == null)
+        {
+            return RedirectToAction("Index");
+        }
+        Dislike newDislike = new Dislike()
+        {
+            UserId = (int)HttpContext.Session.GetInt32("UserId"),
+            SongId = songId
+        };
+        _context.Add(newDislike);
+        _context.SaveChanges();
+        return Redirect($"/song/{songId}");
+    }
+
+    // Remove Disike from database
+    [HttpGet("song/undislike/{songId}")]
+    public IActionResult UnDislikeSong(int songId)
+    {
+        if(HttpContext.Session.GetInt32("UserId") == null)
+        {
+            return RedirectToAction("Index");
+        }
+        // User must be logged and someone who liked the post
+        int loggedUserId = (int)HttpContext.Session.GetInt32("UserId");
+        Dislike? dislikeToDelete = _context.Dislikes.SingleOrDefault(a => a.UserId == loggedUserId && a.SongId == songId);
+        _context.Remove(dislikeToDelete);
+        _context.SaveChanges();
+        return Redirect($"/song/{songId}");
+    }
+
+
 
     // Handle delete song
     [HttpGet("song/delete/{songId}")]

@@ -12,6 +12,7 @@
     <h3>Artist: @Model.Artist</h3>
     <h3>Genre: @Model.Genre</h3>
     <h4>Likes: @Model.UsersWhoLiked.Count</h4>
+    <h4>Dislikes: @Model.UsersWhoDisliked.Count</h4>
 
     @if (Model.UserId == @Context.Session.GetInt32("UserId"))
     {
@@ -26,6 +27,14 @@
         else
         {
             <h4><a href="/song/like/@Model.SongId" class="btn btn-success text-white">Like this song</a></h4>
+        }
+        if (@Model.UsersWhoDisliked.Any(sd => sd.UserId == @Context.Session.GetInt32("UserId")))
+        {
+            <h4><a href="/song/undislike/@Model.SongId" class="btn btn-success text-white">Remove Dislike song</a></h4>
+        }
+        else
+        {
+            <h4><a href="/song/dislike/@Model.SongId" class="btn btn-warning text-white">Dislike song</a></h4>
         }
     }
 </div>

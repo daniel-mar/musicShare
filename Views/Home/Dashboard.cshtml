@@ -24,8 +24,8 @@
                     <td>@s.DurMinutes:@if(s.DurSeconds < 10)
         {<span>0<span>@s.DurSeconds</span></span>}else{@s.DurSeconds}</td>
                     <td>@s.Genre</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td>@s.UsersWhoLiked.Count</td>
+                    <td>@s.UsersWhoDisliked.Count</td>
                     <td><a href="/song/delete/@s.SongId" class="btn btn-danger text-white">Delete</a></td>
                 </tr>
             }

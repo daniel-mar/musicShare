@@ -18,7 +18,8 @@
             <tr>
                 <td><a href="/song/@s.SongId">@s.Title</a></td>
                 <td>@s.Artist</td>
-                <td>@s.DurMinutes:@s.DurSeconds</td>
+                <td>@s.DurMinutes:@if(s.DurSeconds < 10)
+        {<span>0<span>@s.DurSeconds</span></span>}else{@s.DurSeconds}</td>
                 <td>@s.Genre</td>
                 <td>@s.UsersWhoLiked.Count</td>
                 <td>@s.UsersWhoDisliked.Count</td> 

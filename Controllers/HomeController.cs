@@ -99,6 +99,9 @@ public class HomeController : Controller
         }
         ViewBag.NotLoggedIn = false;
         User? userInDb = _context.Users.Include(a => a.SongsSubmitted).FirstOrDefault(a => a.UserId == HttpContext.Session.GetInt32("UserId"));
+        // Store User Submitted songs with likes
+        ViewBag.UserLikedSongs = _context.Songs.Include(a => a.Submitter).Include(b => b.UsersWhoLiked).ToList();
+        ViewBag.UserDislikedSongs = _context.Songs.Include(a => a.Submitter).Include(b => b.UsersWhoDisliked).ToList();
         ViewBag.LoggedIn = userInDb;
         return View("Dashboard");
     }
