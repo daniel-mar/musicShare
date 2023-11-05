@@ -4,10 +4,10 @@ Create project
 -- We know we will be connecting to a database --
 
 install packages: sql
-    dotnet add package Pomelo.EntityFrameworkCore.MySql --version 6.0.3
+    dotnet add package Pomelo.EntityFrameworkCore.MySql --version 6
 
 install packages: database
-    dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.1
+    dotnet add package Microsoft.EntityFrameworkCore.Design --version 6
 
 Within Models folder, create your schemas
     Create:
